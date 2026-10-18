@@ -1,0 +1,36 @@
+{
+  "name": "habitat-service",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "preview": "vite preview",
+    "lint-staged": "lint-staged",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,vue,ts}": [
+      "prettier . --write"
+    ]
+  },
+  "dependencies": {
+    "@quasar/extras": "^2.1.0",
+    "quasar": "^2.33.0",
+    "vue": "^3.5.42"
+  },
+  "devDependencies": {
+    "@quasar/vite-plugin": "^2.0.2",
+    "@vitejs/plugin-vue": "^6.0.8",
+    "husky": "^9.1.7",
+    "prettier": "^3.9.9",
+    "sass-embedded": "^1.104.1",
+    "vite": "^8.3.0"
+  },
+  "packageManager": "pnpm@11.25.0",
+  "engines": {
+    "node": ">=24.0.0",
+    "pnpm": ">=11.25.0"
+  }
+}
