@@ -1,0 +1,49 @@
+name: Build and deploy
+run-name: Build and deploy - ${{ github.ref_name }}
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout project
+        id: checkout
+        uses: actions/checkout@v4
+      - name: install pnpm
+        id: install_pnpm
+        uses: pnpm/setup@v1
+        with:
+          runtime: node@24
+          cache: true
+      - name: build app
+        id: build
+        env:
+          VITE_BASE_PATH: /${{ github.event.repository.name }}
+          VITE_PHONE_NUMBER: ${{ secrets.PHONE_NUMBER }}
+          VITE_EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
+        run: |
+          pnpm i
+          pnpm run build
+      - name: upload static files as artifact
+        id: deployment
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/
+
+  deploy:
+    needs: build
+    permissions:
+      id-token: write
+      pages: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: deploy github page
+        id: deployment
+        uses: actions/deploy-pages@v4
